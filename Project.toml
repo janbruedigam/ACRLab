@@ -8,7 +8,7 @@ ConstrainedDynamics = "65b0d8a9-e9fd-4f02-8653-a7163c490b26"
 ConstrainedDynamicsVis = "07ee0992-da0a-4409-aa8f-e0a0c9c09c30"
 
 [compat]
-ConstrainedDynamics  "0.5.3"
+ConstrainedDynamics = "0.5.3"
 ConstrainedDynamicsVis = "0.2.2"
 julia = "1.5"
 
