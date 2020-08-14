@@ -1,5 +1,11 @@
 module ACRLab
 
-# Write your package code here.
+using ConstrainedDynamics
+using ConstrainedDynamicsVis
+
+export main
+
+include("functions.jl")
+include("gui.jl")
 
 end

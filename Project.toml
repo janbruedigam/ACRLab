@@ -3,8 +3,14 @@ uuid = "32d146a7-1f4f-4920-ad90-37ce648e771e"
 authors = ["Jan Bruedigam"]
 version = "0.1.0"
 
+[deps]
+ConstrainedDynamics = "65b0d8a9-e9fd-4f02-8653-a7163c490b26"
+ConstrainedDynamicsVis = "07ee0992-da0a-4409-aa8f-e0a0c9c09c30"
+
 [compat]
-julia = "1"
+ConstrainedDynamics  "0.5.3"
+ConstrainedDynamicsVis = "0.2.2"
+julia = "1.5"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
