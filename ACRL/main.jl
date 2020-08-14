@@ -1,9 +1,10 @@
 using Pkg
+@info "Setting up ACRLab. This can take several minutes the first time."
 Pkg.activate("ACRL")
 Pkg.instantiate()
-@info "Instantiated Package"
 
+@info "Loading ACRLab. This can take several minutes the first time."
 using ACRLab
-@info "Loaded Package"
 
+@info "Running main()"
 main()
