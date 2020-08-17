@@ -1,5 +1,6 @@
 module ACRLab
 
+using StaticArrays
 using ConstrainedDynamics
 using ConstrainedDynamicsVis
 using Interact
