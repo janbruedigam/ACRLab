@@ -8,6 +8,7 @@ Blink = "ad839575-38b3-5650-b840-f874b8c74a25"
 ConstrainedDynamics = "65b0d8a9-e9fd-4f02-8653-a7163c490b26"
 ConstrainedDynamicsVis = "07ee0992-da0a-4409-aa8f-e0a0c9c09c30"
 Interact = "c601a237-2ae4-5e1e-952c-7a85b0c7eef1"
+Rotations = "6038ab10-8711-5258-84ad-4b1120ba62dc"
 StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
 
 [compat]
@@ -15,6 +16,7 @@ Blink = "0.12.3"
 ConstrainedDynamics = "0.5.3"
 ConstrainedDynamicsVis = "0.2.2"
 Interact = "0.10.3"
+Rotations = "1.0.1"
 StaticArrays = "0.12.4"
 julia = "1.5"
 

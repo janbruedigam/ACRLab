@@ -1,112 +1,62 @@
 function update!(args...)
     dict = args[end]
-    dict["btn1"][] == 0 && dict["btn2"][] == 0 && return
+    btns = ["btn1";"btn2";"btn3";"btn4"]
+    txts = ["txt1";"txt2";"txt3";"txt4"]
 
-    if dict["btn1"][] == 1
-        dict["btn1"]["is-loading"][] = true
-        println("Running simulation")
-        run1!(dict)
-        dict["btn1"]["is-loading"][] = false
-        dict["btn1"][] = 0
-    elseif dict["btn2"][] == 1
-        dict["btn2"]["is-loading"][] = true
-        println("Running simulation")
-        run2!(dict)
-        dict["btn2"]["is-loading"][] = false
-        dict["btn2"][] = 0
-    end    
+    dict[btns[1]][] == 0 && dict[btns[2]][] == 0 && dict[btns[3]][] == 0 && dict[btns[4]][] == 0 && return
+
+    for (i,btn) in enumerate(btns)
+        if dict[btn][] == 1
+            dict[btn]["is-loading"][] = true
+            println("Running simulation")
+
+            i==1 && run1!(dict[txts[i]][])
+            i==2 && run2!(dict[txts[i]][])
+            i==3 && run3!(dict[txts[i]][])
+            i==4 && run4!(dict[txts[i]][])
+
+            dict[btn]["is-loading"][] = false
+            dict[btn][] = 0
+        end
+    end
 
     return
 end
 
-function run1!(dict)
 
 
-    # Parameters
-    joint_axis = [1.0;0.0;0.0]
-
-    length1 = 1.0
-    width, depth = 0.1, 0.1
-    box = Box(width, depth, length1, length1)
-
-    p2 = [0.0;0.0;length1 / 2] # joint connection point
-
-    # Initial orientation
-    ϕ1 = π / 2
-    q1 = UnitQuaternion(RotX(ϕ1))
-
-    # Links
-    origin = Origin{Float64}()
-    link1 = Body(box)
-
-    # Constraints
-    joint_between_origin_and_link1 = EqualityConstraint(Revolute(origin, link1, joint_axis; p2=p2))
-
-    links = [link1]
-    constraints = [joint_between_origin_and_link1]
-    shapes = [box]
-
-
-    mech = Mechanism(origin, links, constraints, shapes = shapes)
-    # setPosition!(origin,link1,p2 = p2,Δq = q1)
-    setPosition!(origin,link1,p2 = p2)
-
-    jointid = constraints[1].id
-    function controller!(mechanism, k)
-        τ = SA[eval(Meta.parse(dict["txtbx1"][]))]
-        setForce!(mechanism, geteqconstraint(mechanism,jointid), τ)
-        return
+function run2!(str)
+    open("Files/E2.jl",create=true,write=true) do file
+        # write(file,"anfang2\n")
+        write(file, str)
+        # write(file, "\nende")
     end
 
-    storage = simulate!(mech, 10., controller!, record = true)
-    visualize(mech, storage, shapes)
+    include("Files/E2.jl")
 
     return
-
 end
 
-function run2!(dict)
-
-
-    # Parameters
-    joint_axis = [1.0;0.0;0.0]
-
-    length1 = 1.0
-    width, depth = 0.1, 0.1
-    box = Box(width, depth, length1, length1)
-
-    p2 = [0.0;0.0;length1 / 2] # joint connection point
-
-    # Initial orientation
-    ϕ1 = π / 2
-    q1 = UnitQuaternion(RotX(ϕ1))
-
-    # Links
-    origin = Origin{Float64}()
-    link1 = Body(box)
-
-    # Constraints
-    joint_between_origin_and_link1 = EqualityConstraint(Revolute(origin, link1, joint_axis; p2=p2))
-
-    links = [link1]
-    constraints = [joint_between_origin_and_link1]
-    shapes = [box]
-
-
-    mech = Mechanism(origin, links, constraints, shapes = shapes)
-    # setPosition!(origin,link1,p2 = p2,Δq = q1)
-    setPosition!(origin,link1,p2 = p2)
-
-    jointid = constraints[1].id
-    function controller!(mechanism, k)
-        τ = SA[eval(Meta.parse(dict["txtbx2"][]))]
-        setForce!(mechanism, geteqconstraint(mechanism,jointid), τ)
-        return
+function run3!(str)
+    open("Files/E3.jl",create=true,write=true) do file
+        # write(file,"anfang3\n")
+        write(file, str)
+        # write(file, "\nende")
     end
 
-    storage = simulate!(mech, 10., controller!, record = true)
-    visualize(mech, storage, shapes)
+    include("Files/E3.jl")
 
     return
+end
 
+function run4!(str)
+    open("Files/E4.jl",create=true,write=true) do file
+        # write(file,"anfang4\n")
+        write(file, str)
+        # write(file, "\nende")
+    end
+
+    include("Files/E4.jl")
+
+    return
 end

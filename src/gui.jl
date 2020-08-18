@@ -5,19 +5,25 @@ end
 
 function setupgui()
     heading = "ACRLab 2: Inverted Pendulum"
-    q1 = "Question 1"
-    sym1 = "Allowed symbols: F, Kf, Vis, Vdes, theta, dtheta"
-    Ftxt1 = "F = "
-    txtbx1 = textbox("Kf * ...")
+
+    sub1 = "Pendulum Swing-Up"
+    txt1 = textarea("F(theta,dtheta) = ...")
     btn1 = button("Execute")
-    q2 = "Question 2"
-    sym2 = "Allowed symbols: F, Kf, Vis, Vdes, theta, dtheta"
-    Ftxt2 = "F = "
-    txtbx2 = textbox("Kf * ...")
+
+    sub2 = "Implementation of a PID Controller"
+    txt2 = textarea("F(x,dx,theta,dtheta) = ...")
     btn2 = button("Execute")
 
-    widgets = [txtbx1;btn1;txtbx2;btn2]
-    widgetnames = ["txtbx1";"btn1";"txtbx2";"btn2"]
+    sub3 = "Implementation of an LQ Regulator"
+    txt3 = textarea("F(x,dx,theta,dtheta,t) = ...")
+    btn3 = button("Execute")
+
+    sub4 = "Double Pendulum"
+    txt4 = textarea("F(x,dx,theta,dtheta,t) = ...")
+    btn4 = button("Execute")
+
+    widgets = [txt1;btn1;txt2;btn2;txt3;btn3;txt4;btn4]
+    widgetnames = ["txt1";"btn1";"txt2";"btn2";"txt3";"btn3";"txt4";"btn4"]
     dict = Dict{String,Widget}()
     for (i,el) in enumerate(widgets)
         dict[widgetnames[i]] = el
@@ -29,22 +35,33 @@ function setupgui()
         ui,
         heading,
         vskip(1em),
-        q1,
+        sub1,
         vskip(1em),
-        sym1,
+        txt1,
         vskip(1em),
-        hbox(Ftxt1,hskip(1em),txtbx1),
         btn1,
         vskip(1em),
-        q2,
+        sub2,
         vskip(1em),
-        sym2,
+        txt2,
         vskip(1em),
-        hbox(Ftxt2,hskip(1em),txtbx2),
-        btn2
+        btn2,
+        vskip(1em),
+        sub3,
+        vskip(1em),
+        txt3,
+        vskip(1em),
+        btn3,
+        vskip(1em),
+        sub4,
+        vskip(1em),
+        txt4,
+        vskip(1em),
+        btn4
     )
+
+    mkpath("Files")
 
     window = Window()
     body!(window, layout)
-
 end
