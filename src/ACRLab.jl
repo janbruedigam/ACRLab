@@ -4,6 +4,7 @@ using StaticArrays
 using Rotations
 using ConstrainedDynamics
 using ConstrainedDynamicsVis
+using ConstrainedControl
 using Interact
 using Blink
 
