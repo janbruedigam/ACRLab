@@ -71,13 +71,13 @@ function run4!(str)
         Q = [diagm(ones(12))*1.0 for i=1:3]
         R = [ones(1,1)]
 
-        lqr = LQR(mech, getid.(bodies), [getid(constraints[1])], Q, R, 10., xd=xd)
+        lqr = LQR(mech, getid.(links), [getid(constraints[1])], Q, R, 10., xd=xd)
 
 
         # controller = Controller4(F,Q,R)
 
         steps = Base.OneTo(1000)
-        storage = Storage{Float64}(steps,2)
+        storage = Storage{Float64}(steps,3)
 
         try
             # simulate!(mech,storage,controller,record = true)
