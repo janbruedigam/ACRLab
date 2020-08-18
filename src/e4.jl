@@ -26,7 +26,7 @@ function run4!(str)
         M = 4.5
 
         cartshape = Box(0.1, 0.5, 0.1, M)
-        pend1shape = Box(0.1, 0.1, L1, L1)
+        pend1shape = Box(0.1, 0.1, L1, L1, color = RGBA(1,0,0))
         pend2shape = Box(0.1, 0.1, L2, L2)
 
         p1 = [0.0;0.0;l1] # joint connection point
