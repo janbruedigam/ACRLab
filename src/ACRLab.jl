@@ -1,5 +1,6 @@
 module ACRLab
 
+using LinearAlgebra
 using StaticArrays
 using Rotations
 using ConstrainedDynamics
