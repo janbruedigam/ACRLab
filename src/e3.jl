@@ -90,7 +90,7 @@ function run3!(str)
 
         # Constraints
         joint1 = EqualityConstraint(Prismatic(origin, cart, ey))
-        joint2 = EqualityConstraint(Revolute(cart, pend1, ex; p2 = -p2))
+        joint2 = EqualityConstraint(Revolute(cart, pend1, ex; p2 = -p1))
 
         links = [cart;pend1]
         constraints = [joint1;joint2]
@@ -99,7 +99,7 @@ function run3!(str)
 
         mech = Mechanism(origin, links, constraints, shapes = shapes, Δt = 0.01)
         setPosition!(origin,cart,Δx = [0;0.0;0])
-        setPosition!(cart,pend1,p2 = -p2, Δq = UnitQuaternion(RotX(0.01)))
+        setPosition!(cart,pend1,p2 = -p1, Δq = UnitQuaternion(RotX(0.01)))
 
         Q = [
             1 0 0 0
