@@ -1,8 +1,8 @@
 # This file is machine-generated - editing it directly is not advised
 
 [[ACRLab]]
-deps = ["Blink", "ConstrainedDynamics", "ConstrainedDynamicsVis", "Interact", "StaticArrays"]
-git-tree-sha1 = "4bb7e188debe7ec6aaaad3f473f2550df85b2671"
+deps = ["Blink", "ConstrainedControl", "ConstrainedDynamics", "ConstrainedDynamicsVis", "Interact", "LinearAlgebra", "Rotations", "StaticArrays"]
+git-tree-sha1 = "5d6860e641ac663036205e5b9fda80db974e2200"
 repo-rev = "master"
 repo-url = "https://github.com/janbruedigam/ACRLab.jl"
 uuid = "32d146a7-1f4f-4920-ad90-37ce648e771e"
@@ -57,6 +57,12 @@ deps = ["ColorTypes", "FixedPointNumbers", "InteractiveUtils", "Reexport"]
 git-tree-sha1 = "5639e44833cfcf78c6a73fbceb4da75611d312cd"
 uuid = "5ae59095-9a9b-59fe-a467-6f913c188581"
 version = "0.12.3"
+
+[[ConstrainedControl]]
+deps = ["ConstrainedDynamics", "LinearAlgebra", "Rotations", "StaticArrays"]
+git-tree-sha1 = "679b2579377c3cf1845f082213c3ade8abf5d926"
+uuid = "5933d0f4-dc4a-46ce-a189-54b4465bd7a4"
+version = "0.1.0"
 
 [[ConstrainedDynamics]]
 deps = ["Colors", "LightXML", "LinearAlgebra", "Rotations", "StaticArrays"]
