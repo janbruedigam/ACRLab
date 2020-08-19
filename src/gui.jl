@@ -6,12 +6,12 @@ end
 function setupgui()
     heading = "ACRLab 2: Inverted Pendulum"
 
-    sub1 = "Pendulum Swing-Up"
+    sub1 = "Pendulum Swing-Up. Set \"F\", \"xinit\", and \"theta1init\""
     txt1 = textarea("F(theta,dtheta,Vis) = ...")
     btn1 = button("Run Simulation")
 
-    sub2 = "Implementation of a PID Controller"
-    txt2 = textarea("F(e,inte,de) = ...")
+    sub2 = "Implementation of a PID Controller. Set \"F\", \"xinit\", and \"theta1init\""
+    txt2 = textarea("function F(e,inte,de,theta,dtheta,Vis)\n\t...\nend")
     btn2 = button("Run Simulation")
 
     sub3 = "Implementation of an LQ Regulator"

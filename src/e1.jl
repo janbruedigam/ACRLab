@@ -90,9 +90,9 @@ function run1!(str)
 
 
         mech = Mechanism(origin, links, constraints, shapes = shapes, Δt = Δt, g = -g)
-        setPosition!(origin,cart,Δx = [0;-0.5;0])
-        setPosition!(cart,pend,p2 = -p, Δq = UnitQuaternion(RotX(pi)))
 
+        xinit = 0.0
+        theta1init = pi
         F(theta,dtheta,Vis) = 0
         sgn(x) = x==0 ? 1 : sign(x)
 
@@ -103,6 +103,9 @@ function run1!(str)
         write(file, "
         
         ### End Student Input
+
+        setPosition!(origin,cart,Δx = [0;xinit;0])
+        setPosition!(cart,pend,p2 = -p, Δq = UnitQuaternion(RotX(theta1init)))
 
         controller = Controller1(F,g,m,l1,c,k,Fs)
 

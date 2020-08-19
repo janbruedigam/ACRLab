@@ -1,6 +1,8 @@
 mutable struct Controller2 <: Controller
     Δt::Real
     g::Real
+    m::Real
+    l::Real
 
     θprev::Real
     integrator::Real
@@ -12,15 +14,17 @@ mutable struct Controller2 <: Controller
     F::Function
     control!::Function
 
-    function Controller2(F,g,c,k,Fs,Δt)
+    function Controller2(F,g,m,l,c,k,Fs,Δt)
 
-        new(Δt,g,0.0,0.0,c,k,Fs,F,control!)
+        new(Δt,g,m,l,0.0,0.0,c,k,Fs,F,control!)
     end
 end
 
 function control!(mechanism,controller::Controller2,k)
     Δt = controller.Δt
     g = controller.g
+    m = controller.m
+    l = controller.l
     c = controller.c
     k = controller.k
     Fs = controller.Fs
@@ -32,6 +36,7 @@ function control!(mechanism,controller::Controller2,k)
     q = pend.state.qc
     θ = (rotation_angle(q) * rotation_axis(q))[1]
     ω = pend.state.ωc[1]
+    V = 1/6*m*l^2*ω^2 + m*g*l*(1+cos(θ))
     if k == 1
         θprev = θ
     else
@@ -44,7 +49,7 @@ function control!(mechanism,controller::Controller2,k)
     controller.integrator += e*Δt
     inte = controller.integrator
   
-    Fcart = F(e,inte,de)
+    Fcart = F(e,inte,de,θ,ω,V)
     if v < 1e-3
         Fcart = sign(Fcart)*max(abs(Fcart)-Fs,0) 
     end
@@ -101,10 +106,11 @@ function run2!(str)
 
 
         mech = Mechanism(origin, links, constraints, shapes = shapes, Δt = Δt, g = -g)
-        setPosition!(origin,cart,Δx = [0;0;0])
-        setPosition!(cart,pend,p2 = -p, Δq = UnitQuaternion(RotX(0.1)))
 
+        xinit = 0.0
+        theta1init = pi
         F(e,inte,de) = 0
+        sgn(x) = x==0 ? 1 : sign(x)
 
         ### Begin Student Input
 
@@ -114,7 +120,10 @@ function run2!(str)
         
         ### End Student Input
 
-        controller = Controller2(F,g,c,k,Fs,Δt)
+        setPosition!(origin,cart,Δx = [0;xinit;0])
+        setPosition!(cart,pend,p2 = -p, Δq = UnitQuaternion(RotX(theta1init)))
+
+        controller = Controller2(F,g,m,l,c,k,Fs,Δt)
 
         steps = Base.OneTo(Int(10/Δt))
         storage = Storage{Float64}(steps,2)
