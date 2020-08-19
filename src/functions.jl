@@ -8,7 +8,7 @@ function update!(args...)
     for (i,btn) in enumerate(btns)
         if dict[btn][] == 1
             dict[btn]["is-loading"][] = true
-            println("Running simulation")
+            println("Starting simulation...")
 
             i==1 && run1!(dict[txts[i]][])
             i==2 && run2!(dict[txts[i]][])

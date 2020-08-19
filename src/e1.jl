@@ -109,8 +109,7 @@ function run1!(str)
         try
             simulate!(mech,storage,controller,record = true)
         catch
-            @info \"Unstable behavior\"
-            println(\"Unstable behavior\")
+            println(\"Error. Unstable behavior.\")
         end
         
         visualize(mech,storage,shapes)")
@@ -119,8 +118,7 @@ function run1!(str)
     try
         include("Files/E1.jl")
     catch
-        @error "Code error"
-        println("Code error")
+        println("Error. Bad code.")
     end
 
     return

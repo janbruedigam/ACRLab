@@ -2,7 +2,7 @@
 
 [[ACRLab]]
 deps = ["Blink", "ConstrainedControl", "ConstrainedDynamics", "ConstrainedDynamicsVis", "Interact", "LinearAlgebra", "Rotations", "StaticArrays"]
-git-tree-sha1 = "a3cab59b30d9cdad60c7717396cdcc9440d09984"
+git-tree-sha1 = "89ff38f34659d0a6e240b83665bd197baef7801e"
 repo-rev = "master"
 repo-url = "https://github.com/janbruedigam/ACRLab.jl"
 uuid = "32d146a7-1f4f-4920-ad90-37ce648e771e"

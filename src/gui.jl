@@ -8,19 +8,19 @@ function setupgui()
 
     sub1 = "Pendulum Swing-Up"
     txt1 = textarea("F(theta,dtheta,Vis) = ...")
-    btn1 = button("Execute")
+    btn1 = button("Run Simulation")
 
     sub2 = "Implementation of a PID Controller"
     txt2 = textarea("F(e,inte,de) = ...")
-    btn2 = button("Execute")
+    btn2 = button("Run Simulation")
 
     sub3 = "Implementation of an LQ Regulator"
     txt3 = textarea("F(x,dx,theta,dtheta,t) = ...")
-    btn3 = button("Execute")
+    btn3 = button("Run Simulation")
 
     sub4 = "Double Pendulum"
     txt4 = textarea("F(x,dx,theta,dtheta,t) = ...")
-    btn4 = button("Execute")
+    btn4 = button("Run Simulation")
 
     widgets = [txt1;btn1;txt2;btn2;txt3;btn3;txt4;btn4]
     widgetnames = ["txt1";"btn1";"txt2";"btn2";"txt3";"btn3";"txt4";"btn4"]
