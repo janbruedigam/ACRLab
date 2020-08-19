@@ -2,9 +2,11 @@ mutable struct Controller1 <: Controller
     g::Real
     m::Real
     l::Real
+
     c::Real
     k::Real
     Fs::Real
+
     F::Function
     control!::Function
 
@@ -31,10 +33,11 @@ function control!(mechanism,controller::Controller1,k)
     ω = pend.state.ωc[1]
     V = 1/6*m*l^2*ω^2 + m*g*l*(1+cos(θ))
 
-    Fcart = F(θ,ω,V) - sign(v)*k*g
+    Fcart = F(θ,ω,V)
     if v < 1e-3
         Fcart = sign(Fcart)*max(abs(Fcart)-Fs,0) 
     end
+    Fcart = sign(Fcart)*max(abs(Fcart)-k*g,0)
     Fpend = -c*ω
 
     setForce!(mechanism, geteqconstraint(mechanism, 3), [Fcart])
