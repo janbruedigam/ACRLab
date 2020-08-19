@@ -135,7 +135,7 @@ function run3!(str)
         setPosition!(origin,cart,Δx = [0;xinit;0])
         setPosition!(cart,pend,p2 = -p, Δq = UnitQuaternion(RotX(theta1init)))
 
-        controller = Controller3(F,g,M,m,l1,c,k,Fs,Q,R)
+        controller = Controller3(F,Δt,g,M,m,l1,c,k,Fs,Q,R)
 
         steps = Base.OneTo(Int(10/Δt))
         storage = Storage{Float64}(steps,2)
