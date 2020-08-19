@@ -1,4 +1,5 @@
 mutable struct Controller3 <: Controller
+    Δt::Real
     g::Real
 
     c::Real
@@ -9,7 +10,7 @@ mutable struct Controller3 <: Controller
     F::Function
     control!::Function
 
-    function Controller3(F,g,M,m,l,c,k,Fs,Q,R)					
+    function Controller3(F,Δt,g,M,m,l,c,k,Fs,Q,R)					
         I=1/3*m*l^2					
         v1=(M+m)/(I*(M+m)+(l^2*m*M))
         v2=(I+l^2*m)/(I*(M+m)+(l^2*m*M))
@@ -31,11 +32,12 @@ mutable struct Controller3 <: Controller
         P = ConstrainedControl.care(A,B,Q,R)
         K = R\B'*P
 
-        new(g,c,k,Fs,K,F,control!)
+        new(Δt,g,c,k,Fs,K,F,control!)
     end
 end
 
-function control!(mechanism,controller::Controller3,k)
+function control!(mechanism,controller::Controller3,kstep)
+    Δt = controller.Δt
     g = controller.g
     c = controller.c
     k = controller.k
@@ -53,7 +55,7 @@ function control!(mechanism,controller::Controller3,k)
 
     z = [x;v;θ;ω]
 
-    Fcart = F(z,K)
+    Fcart = F(z,K,kstep*Δt)
     if v < 1e-3
         Fcart = sign(Fcart)*max(abs(Fcart)-Fs,0) 
     end

@@ -16,7 +16,7 @@ mutable struct Controller1 <: Controller
     end
 end
 
-function control!(mechanism,controller::Controller1,k)
+function control!(mechanism,controller::Controller1,kstep)
     g = controller.g
     m = controller.m
     l = controller.l
