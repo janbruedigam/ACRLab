@@ -1,28 +1,44 @@
 mutable struct Controller1 <: Controller
-    l::Real
+    g::Real
     m::Real
+    l::Real
+    c::Real
+    k::Real
+    Fs::Real
     F::Function
     control!::Function
 
-    function Controller1(F,m,l)
+    function Controller1(F,g,m,l,c,k,Fs)
 
-        new(l,m,F,control!)
+        new(g,m,l,c,k,Fs,F,control!)
     end
 end
 
 function control!(mechanism,controller::Controller1,k)
-    l = controller.l
+    g = controller.g
     m = controller.m
+    l = controller.l
+    c = controller.c
+    k = controller.k
+    Fs = controller.Fs
     F = controller.F
+    cart = mechanism.bodies[1]
     pend = mechanism.bodies[2]
 
+    v = cart.state.vc[2]
     q = pend.state.qc
     θ = (rotation_angle(q) * rotation_axis(q))[1]
     ω = pend.state.ωc[1]
-    V = 2/3*m*l^2*ω^2 + m*9.81*l*(1+cos(θ))
-  
-    u = [F(θ,ω,V)]
-    setForce!(mechanism, geteqconstraint(mechanism, 3), u)
+    V = 1/6*m*l^2*ω^2 + m*g*l*(1+cos(θ))
+
+    Fcart = F(θ,ω,V) - sign(v)*k*g
+    if v < 1e-3
+        Fcart = sign(Fcart)*max(abs(Fcart)-Fs,0) 
+    end
+    Fpend = -c*ω
+
+    setForce!(mechanism, geteqconstraint(mechanism, 3), [Fcart])
+    setForce!(mechanism, geteqconstraint(mechanism, 4), [Fpend])
 
     return
 end
@@ -30,46 +46,49 @@ end
 function run1!(str)
     open("Files/E1.jl",create=true,write=true) do file
         write(file,"
-        # Parameters
+        Δt = 0.01
+
+        # Parameters from Table 1.1
+        g = 9.81
+        L1 = 0.28125
+        l1 = L1/2
+        l = (l1-0.135)/2 + l1
+        M = 4.5
+        m = 0.2585
+        # I = 1/3*m*l^2
+        c = 0.002
+        k = 0.3
+        Fs = 8
+
+        # Joint axes
         ex = [1.0;0.0;0.0]
         ey = [0.0;1.0;0.0]
-        m1 = 0.135
-        m2 = 0.123
-        l1 = 0.140
-        l2 = 0.135
-        L1 = 0.280
-        L2 = 0.270
-        M = 4.5
 
         cartshape = Box(0.1, 0.5, 0.1, M)
-        pend1shape = Box(0.1, 0.1, L1, L1)
-        pend2shape = Box(0.1, 0.1, L2, L2)
+        pendshape = Box(0.055, 0.055, L1, m)
 
-        p1 = [0.0;0.0;l1] # joint connection point
-        p2 = [0.0;0.0;l2] # joint connection point
+        p = [0.0;0.0;l1] # joint connection point
 
         # Desired orientation
         θ1 = 0
-        θ2 = 0
 
         # Links
         origin = Origin{Float64}()
         cart = Body(cartshape)
-        pend1 = Body(pend1shape)
-        pend2 = Body(pend2shape)
+        pend = Body(pendshape)
 
         # Constraints
         joint1 = EqualityConstraint(Prismatic(origin, cart, ey))
-        joint2 = EqualityConstraint(Revolute(cart, pend1, ex; p2 = -p1))
+        joint2 = EqualityConstraint(Revolute(cart, pend, ex; p2 = -p))
 
-        links = [cart;pend1]
+        links = [cart;pend]
         constraints = [joint1;joint2]
-        shapes = [cartshape;pend1shape]
+        shapes = [cartshape;pendshape]
 
 
-        mech = Mechanism(origin, links, constraints, shapes = shapes, Δt = 0.01)
-        setPosition!(origin,cart,Δx = [0;0.0;0])
-        setPosition!(cart,pend1,p2 = -p1, Δq = UnitQuaternion(RotX(pi)))
+        mech = Mechanism(origin, links, constraints, shapes = shapes, Δt = Δt, g = -g)
+        setPosition!(origin,cart,Δx = [0;-0.5;0])
+        setPosition!(cart,pend,p2 = -p, Δq = UnitQuaternion(RotX(pi)))
 
         F(theta,dtheta,Vis) = 0
         sgn(x) = x==0 ? 1 : sign(x)
@@ -82,21 +101,27 @@ function run1!(str)
         
         ### End Student Input
 
-        controller = Controller1(F,m1,l1)
+        controller = Controller1(F,g,m,l1,c,k,Fs)
 
-        steps = Base.OneTo(1000)
+        steps = Base.OneTo(Int(10/Δt))
         storage = Storage{Float64}(steps,2)
 
         try
             simulate!(mech,storage,controller,record = true)
         catch
             @info \"Unstable behavior\"
+            println(\"Unstable behavior\")
         end
         
         visualize(mech,storage,shapes)")
     end
 
-    include("Files/E1.jl")
+    try
+        include("Files/E1.jl")
+    catch
+        @error "Code error"
+        println("Code error")
+    end
 
     return
 end
