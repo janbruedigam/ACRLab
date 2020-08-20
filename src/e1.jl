@@ -1,6 +1,7 @@
 mutable struct Controller1 <: Controller
     g::Real
     m::Real
+    M::Real
     l::Real
 
     c::Real
@@ -10,15 +11,16 @@ mutable struct Controller1 <: Controller
     F::Function
     control!::Function
 
-    function Controller1(F,g,m,l,c,k,Fs)
+    function Controller1(F,g,m,M,l,c,k,Fs)
 
-        new(g,m,l,c,k,Fs,F,control!)
+        new(g,m,M,l,c,k,Fs,F,control!)
     end
 end
 
 function control!(mechanism,controller::Controller1,kstep)
     g = controller.g
     m = controller.m
+    M = controller.M
     l = controller.l
     c = controller.c
     k = controller.k
@@ -34,11 +36,7 @@ function control!(mechanism,controller::Controller1,kstep)
     V = 1/6*m*l^2*ω^2 + m*g*l*(1+cos(θ))
 
     Fcart = F(θ,ω,V)
-    if v < 1e-3
-        Fcart = sign(Fcart)*max(abs(Fcart)-Fs,0) 
-    end
-    Fcart = sign(Fcart)*max(abs(Fcart)-k*g,0)
-    Fpend = -c*ω
+    Fcart, Fpend = friction(Fcart, 0, v, ω, k, c, Fs)
 
     setForce!(mechanism, geteqconstraint(mechanism, 3), [Fcart])
     setForce!(mechanism, geteqconstraint(mechanism, 4), [Fpend])
@@ -107,7 +105,7 @@ function run1!(str)
         setPosition!(origin,cart,Δx = [0;xinit;0])
         setPosition!(cart,pend,p2 = -p, Δq = UnitQuaternion(RotX(theta1init)))
 
-        controller = Controller1(F,g,m,l1,c,k,Fs)
+        controller = Controller1(F,g,m,M,l1,c,k,Fs)
 
         steps = Base.OneTo(Int(10/Δt))
         storage = Storage{Float64}(steps,2)

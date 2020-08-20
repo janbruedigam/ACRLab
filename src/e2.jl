@@ -2,6 +2,7 @@ mutable struct Controller2 <: Controller
     Δt::Real
     g::Real
     m::Real
+    M::Real
     l::Real
 
     θprev::Real
@@ -14,9 +15,9 @@ mutable struct Controller2 <: Controller
     F::Function
     control!::Function
 
-    function Controller2(F,g,m,l,c,k,Fs,Δt)
+    function Controller2(F,g,m,M,l,c,k,Fs,Δt)
 
-        new(Δt,g,m,l,0.0,0.0,c,k,Fs,F,control!)
+        new(Δt,g,m,M,l,0.0,0.0,c,k,Fs,F,control!)
     end
 end
 
@@ -24,6 +25,7 @@ function control!(mechanism,controller::Controller2,kstep)
     Δt = controller.Δt
     g = controller.g
     m = controller.m
+    M = controller.M
     l = controller.l
     c = controller.c
     k = controller.k
@@ -50,11 +52,7 @@ function control!(mechanism,controller::Controller2,kstep)
     inte = controller.integrator
   
     Fcart = F(e,inte,de,θ,ω,V)
-    if v < 1e-3
-        Fcart = sign(Fcart)*max(abs(Fcart)-Fs,0) 
-    end
-    Fcart = sign(Fcart)*max(abs(Fcart)-k*g,0)
-    Fpend = -c*ω
+    Fcart, Fpend = friction(Fcart, 0, v, ω, k, c, Fs)
 
     setForce!(mechanism, geteqconstraint(mechanism, 3), [Fcart])
     setForce!(mechanism, geteqconstraint(mechanism, 4), [Fpend])
@@ -123,7 +121,7 @@ function run2!(str)
         setPosition!(origin,cart,Δx = [0;xinit;0])
         setPosition!(cart,pend,p2 = -p, Δq = UnitQuaternion(RotX(theta1init)))
 
-        controller = Controller2(F,g,m,l,c,k,Fs,Δt)
+        controller = Controller2(F,g,m,M,l,c,k,Fs,Δt)
 
         steps = Base.OneTo(Int(10/Δt))
         storage = Storage{Float64}(steps,2)

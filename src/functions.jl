@@ -22,3 +22,24 @@ function update!(args...)
 
     return
 end
+
+function friction(Fcart, Fpend, v, ω, k, c, Fs)
+    if abs(v) < 1e-3 && abs(Fcart) < Fs 
+        Fcart = 0
+    end
+    Fcart = Fcart - k*v
+    Fpend = -c*ω
+
+    return Fcart, Fpend
+end
+
+function friction(Fcart, Fpend1, Fpend2, v, ω1, ω2, k, c, Fs)
+    if abs(v) < 1e-3 && abs(Fcart) < Fs 
+        Fcart = 0
+    end
+    Fcart = Fcart - k*v
+    Fpend1 = -c*ω1
+    Fpend2 = -c*ω2
+
+    return Fcart, Fpend1, Fpend2
+end

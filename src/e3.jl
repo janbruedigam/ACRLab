@@ -1,6 +1,7 @@
 mutable struct Controller3 <: Controller
     Δt::Real
     g::Real
+    M::Real
 
     c::Real
     k::Real
@@ -32,13 +33,14 @@ mutable struct Controller3 <: Controller
         P = ConstrainedControl.care(A,B,Q,R)
         K = R\B'*P
 
-        new(Δt,g,c,k,Fs,K,F,control!)
+        new(Δt,g,M,c,k,Fs,K,F,control!)
     end
 end
 
 function control!(mechanism,controller::Controller3,kstep)
     Δt = controller.Δt
     g = controller.g
+    M = controller.M
     c = controller.c
     k = controller.k
     Fs = controller.Fs
@@ -56,11 +58,7 @@ function control!(mechanism,controller::Controller3,kstep)
     z = [x;v;θ;ω]
 
     Fcart = F(z,K,kstep*Δt)
-    if v < 1e-3
-        Fcart = sign(Fcart)*max(abs(Fcart)-Fs,0) 
-    end
-    Fcart = sign(Fcart)*max(abs(Fcart)-k*g,0)
-    Fpend = -c*ω
+    Fcart, Fpend = friction(Fcart, 0, v, ω, k, c, Fs)
 
     setForce!(mechanism, geteqconstraint(mechanism, 3), [Fcart])
     setForce!(mechanism, geteqconstraint(mechanism, 4), [Fpend])
