@@ -3,6 +3,7 @@ module ACRLab
 using LinearAlgebra
 using StaticArrays
 using Rotations
+using Rotations: rotation_error
 using ConstrainedDynamics
 using ConstrainedDynamicsVis
 using ConstrainedControl

@@ -15,7 +15,7 @@ StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
 
 [compat]
 Blink = "0.12.3"
-ConstrainedControl = "0.1.0"
+ConstrainedControl = "0.1.1"
 ConstrainedDynamics = "0.5.3"
 ConstrainedDynamicsVis = "0.2.2"
 Interact = "0.10.3"
