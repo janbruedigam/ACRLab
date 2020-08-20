@@ -1,6 +1,14 @@
-using ACRLab
 using Test
+using SafeTestsets
 
-@testset "ACRLab.jl" begin
-    # Write your tests here.
+
+mkpath("Files")
+
+@safetestset "Simulation Tests" begin
+    include("e1_test.jl")
+    include("e2_test.jl")
+    include("e3_test.jl")
+    include("e4_test.jl")
 end
+
+rm("Files"; force=true, recursive=true)

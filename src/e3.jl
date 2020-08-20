@@ -66,7 +66,7 @@ function control!(mechanism,controller::Controller3,kstep)
     return
 end
 
-function run3!(str)
+function run3!(str; vis::Bool=true)
     open("Files/E3.jl",create=true,write=true) do file
         write(file,"
         Δt = 0.004
@@ -142,9 +142,12 @@ function run3!(str)
             simulate!(mech,storage,controller,record = true)
         catch
             println(\"Unstable behavior\")
-        end
+        end")
 
-        visualize(mech,storage,shapes)")
+        if vis
+            write(file, "
+            visualize(mech,storage,shapes)")
+        end
     end
 
     try

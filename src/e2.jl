@@ -60,7 +60,7 @@ function control!(mechanism,controller::Controller2,kstep)
     return
 end
 
-function run2!(str)
+function run2!(str; vis::Bool=true)
     open("Files/E2.jl",create=true,write=true) do file
         write(file,"
         Δt = 0.01
@@ -107,7 +107,7 @@ function run2!(str)
 
         xinit = 0.0
         theta1init = pi
-        F(e,inte,de) = 0
+        F(e,inte,de,theta,dtheta,Vis) = 0
         sgn(x) = x==0 ? 1 : sign(x)
 
         ### Begin Student Input
@@ -130,9 +130,12 @@ function run2!(str)
             simulate!(mech,storage,controller,record = true)
         catch
             println(\"Unstable behavior\")
-        end
+        end")
 
-        visualize(mech,storage,shapes)")
+        if vis
+            write(file, "
+            visualize(mech,storage,shapes)")
+        end
     end
 
     try

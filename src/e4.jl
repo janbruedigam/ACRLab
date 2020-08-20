@@ -70,7 +70,7 @@ function control!(mechanism::Mechanism{T,Nn,Nb},controller::Controller4,kstep) w
     return
 end
 
-function run4!(str)
+function run4!(str; vis::Bool=true)
     open("Files/E4.jl",create=true,write=true) do file
         write(file,"
         Δt = 0.01
@@ -123,14 +123,14 @@ function run4!(str)
         shapes = [cartshape;pend1shape;pend2shape]
 
 
-        mech = Mechanism(origin, links, constraints, shapes = shapes, Δt = 0.01)
+        mech = Mechanism(origin, links, constraints, shapes = shapes, Δt = Δt)
 
         xinit = 0.0
         theta1init = pi
         theta2init = 0
         Q = diagm(ones(6))
-        R = 1
-        F(z,K) = 0
+        R = 0.1
+        F(z,K,t) = K*zeros(6)
 
         ### Begin Student Input
 
@@ -164,9 +164,12 @@ function run4!(str)
             simulate!(mech,storage,controller,record = true)
         catch
             println(\"Unstable behavior\")
-        end
+        end")
 
-        visualize(mech,storage,shapes)")
+        if vis
+            write(file, "
+            visualize(mech,storage,shapes)")
+        end
     end
 
     try

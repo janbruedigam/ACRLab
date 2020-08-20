@@ -14,12 +14,12 @@ function setupgui()
     txt2 = textarea("function F(e,inte,de,theta,dtheta,Vis)\n\t...\nend")
     btn2 = button("Run Simulation")
 
-    sub3 = "Implementation of an LQ Regulator. Set \"F\", \"xinit\", and \"theta1init\", \"Q\", \"R\"."
+    sub3 = "Implementation of an LQ Regulator. Set \"F\", \"xinit\", \"theta1init\", \"Q\", and \"R\"."
     txt3 = textarea("F(z,K,t) = ...")
     btn3 = button("Run Simulation")
 
-    sub4 = "Double Pendulum"
-    txt4 = textarea("F(x,dx,theta,dtheta,t) = ...")
+    sub4 = "Double Pendulum. Set \"F\", \"xinit\", \"theta1init\", \"theta2init\", \"Q\", and \"R\"."
+    txt4 = textarea("F(z,K,t) = ...")
     btn4 = button("Run Simulation")
 
     widgets = [txt1;btn1;txt2;btn2;txt3;btn3;txt4;btn4]
