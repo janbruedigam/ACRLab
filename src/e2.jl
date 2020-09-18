@@ -38,7 +38,7 @@ function control!(mechanism,controller::Controller2,kstep)
     q = pend.state.qc
     θ = (rotation_angle(q) * rotation_axis(q))[1]
     ω = pend.state.ωc[1]
-    V = 1/6*m*l^2*ω^2 + m*g*l*(1+cos(θ))
+    V = 2/3*m*l^2*ω^2 + m*g*l*(1+cos(θ))
     if k == 1
         θprev = θ
     else
@@ -69,7 +69,7 @@ function run2!(str; vis::Bool=true)
         g = 9.81
         L1 = 0.28125
         l1 = L1/2
-        l = (l1-0.135)/2 + l1
+        l = l1 # (l1-0.135)/2 + l1
         M = 4.5
         m = 0.2585
         # I = 1/3*m*l^2

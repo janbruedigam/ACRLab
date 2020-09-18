@@ -33,7 +33,7 @@ function control!(mechanism,controller::Controller1,kstep)
     q = pend.state.qc
     θ = (rotation_angle(q) * rotation_axis(q))[1]
     ω = pend.state.ωc[1]
-    V = 1/6*m*l^2*ω^2 + m*g*l*(1+cos(θ))
+    V = 2/3*m*l^2*ω^2 + m*g*l*(1+cos(θ))
 
     Fcart = F(θ,ω,V)
     Fcart, Fpend = friction(Fcart, 0, v, ω, k, c, Fs)
@@ -53,7 +53,7 @@ function run1!(str; vis::Bool=true)
         g = 9.81
         L1 = 0.28125
         l1 = L1/2
-        l = (l1-0.135)/2 + l1
+        l = l1 #0.14344
         M = 4.5
         m = 0.2585
         # I = 1/3*m*l^2
@@ -105,7 +105,7 @@ function run1!(str; vis::Bool=true)
         setPosition!(origin,cart,Δx = [0;xinit;0])
         setPosition!(cart,pend,p2 = -p, Δq = UnitQuaternion(RotX(theta1init)))
 
-        controller = Controller1(F,g,m,M,l1,c,k,Fs)
+        controller = Controller1(F,g,m,M,l,c,k,Fs)
 
         steps = Base.OneTo(Int(10/Δt))
         storage = Storage{Float64}(steps,2)

@@ -75,7 +75,7 @@ function run3!(str; vis::Bool=true)
         g = 9.81
         L1 = 0.28125
         l1 = L1/2
-        l = (l1-0.135)/2 + l1
+        l = l1 # (l1-0.135)/2 + l1
         M = 4.5
         m = 0.2585
         # I = 1/3*m*l^2
@@ -133,7 +133,7 @@ function run3!(str; vis::Bool=true)
         setPosition!(origin,cart,Δx = [0;xinit;0])
         setPosition!(cart,pend,p2 = -p, Δq = UnitQuaternion(RotX(theta1init)))
 
-        controller = Controller3(F,Δt,g,M,m,l1,c,k,Fs,Q,R)
+        controller = Controller3(F,Δt,g,M,m,l,c,k,Fs,Q,R)
 
         steps = Base.OneTo(Int(10/Δt))
         storage = Storage{Float64}(steps,2)
