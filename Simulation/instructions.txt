@@ -1,2 +1,0 @@
-cd("C:/") to folder path
-include("main.jl")
