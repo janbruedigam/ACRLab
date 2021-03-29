@@ -96,10 +96,6 @@ function run4!(str; vis::Bool=true)
         ex = [1.0;0.0;0.0]
         ey = [0.0;1.0;0.0]
 
-        cartshape = Box(0.1, 0.5, 0.1, M)
-        pend1shape = Box(0.055, 0.055/2, L1, m1, color = RGBA(1,0,0))
-        pend2shape = Box(0.055, 0.055/2, L2, m2)
-
         p1 = [0.0;0.0;l1] # joint connection point
         p2 = [0.0;0.0;l2] # joint connection point
 
@@ -109,9 +105,9 @@ function run4!(str; vis::Bool=true)
 
         # Links
         origin = Origin{Float64}()
-        cart = Body(cartshape)
-        pend1 = Body(pend1shape)
-        pend2 = Body(pend2shape)
+        cart = Box(0.1, 0.5, 0.1, M)
+        pend1 = Box(0.055, 0.055/2, L1, m1, color = RGBA(1,0,0))
+        pend2 = Box(0.055, 0.055/2, L2, m2)
 
         # Constraints
         joint1 = EqualityConstraint(Prismatic(origin, cart, ey))
@@ -120,10 +116,8 @@ function run4!(str; vis::Bool=true)
 
         links = [cart;pend1;pend2]
         constraints = [joint1;joint2;joint3]
-        shapes = [cartshape;pend1shape;pend2shape]
 
-
-        mech = Mechanism(origin, links, constraints, shapes = shapes, Δt = Δt)
+        mech = Mechanism(origin, links, constraints, Δt = Δt)
 
         xinit = 0.0
         theta1init = pi
@@ -142,7 +136,7 @@ function run4!(str; vis::Bool=true)
 
         setPosition!(origin,cart,Δx = [0;xinit;0])
         setPosition!(cart,pend1,p2 = -p1, Δq = UnitQuaternion(RotX(theta1init)))
-        setPosition!(pend1,pend2,p1 = p1, p2 = -p2, Δq = UnitQuaternion(RotX(theta1init+theta2init)))
+        setPosition!(pend1,pend2,p1 = p1, p2 = -p2, Δq = UnitQuaternion(RotX(theta2init)))
 
         xd = [[[0;0.0;0.0]]; [p1]; [2*p1+p2]]
 
@@ -168,7 +162,7 @@ function run4!(str; vis::Bool=true)
 
         if vis
             write(file, "
-            visualize(mech,storage,shapes)")
+            visualize(mech,storage)")
         end
     end
 

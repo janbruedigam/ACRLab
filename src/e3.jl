@@ -87,9 +87,6 @@ function run3!(str; vis::Bool=true)
         ex = [1.0;0.0;0.0]
         ey = [0.0;1.0;0.0]
 
-        cartshape = Box(0.1, 0.5, 0.1, M)
-        pendshape = Box(0.055, 0.055, L1, m)
-
         p = [0.0;0.0;l1] # joint connection point
 
         # Desired orientation
@@ -97,8 +94,8 @@ function run3!(str; vis::Bool=true)
 
         # Links
         origin = Origin{Float64}()
-        cart = Body(cartshape)
-        pend = Body(pendshape)
+        cart = Box(0.1, 0.5, 0.1, M)
+        pend = Box(0.055, 0.055, L1, m)
 
         # Constraints
         joint1 = EqualityConstraint(Prismatic(origin, cart, ey))
@@ -106,10 +103,8 @@ function run3!(str; vis::Bool=true)
 
         links = [cart;pend]
         constraints = [joint1;joint2]
-        shapes = [cartshape;pendshape]
 
-
-        mech = Mechanism(origin, links, constraints, shapes = shapes, Δt = Δt, g = -g)
+        mech = Mechanism(origin, links, constraints, Δt = Δt, g = -g)
 
         xinit = 0.0
         theta1init = pi
@@ -146,7 +141,7 @@ function run3!(str; vis::Bool=true)
 
         if vis
             write(file, "
-            visualize(mech,storage,shapes)")
+            visualize(mech,storage)")
         end
     end
 
