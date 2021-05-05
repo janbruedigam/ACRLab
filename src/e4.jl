@@ -144,7 +144,6 @@ function run4!(str; vis::Bool=true)
         Q2 = diagm([0;0;0; 0;0;0; Q[3,3]*4;0;0; Q[4,4];0;0])
         Q3 = diagm([0;0;0; 0;0;0; Q[5,5]*4;0;0; Q[6,6];0;0])
         Q = [[Q1];[Q2];[Q3]]
-        Q = [diagm(ones(12)) for i=1:3]
         R = [ones(1,1)*R[1]]
 
         lqr = LQR(mech, getid.(links), [getid(constraints[1])], Q, R, Inf, xd=xd)
