@@ -126,7 +126,7 @@ function run3!(str; vis::Bool=true)
         ### End Student Input
 
         setPosition!(origin,cart,Δx = [0;xinit;0])
-        setPosition!(cart,pend,p2 = -p, Δq = UnitQuaternion(RotX(theta1init)))
+        setPosition!(cart,pend,p2 = -p, Δq = QuatRotation(RotX(theta1init)))
 
         controller = Controller3(F,Δt,g,M,m,l,c,k,Fs,Q,R)
 

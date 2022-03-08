@@ -135,8 +135,8 @@ function run4!(str; vis::Bool=true)
         ### End Student Input
 
         setPosition!(origin,cart,Δx = [0;xinit;0])
-        setPosition!(cart,pend1,p2 = -p1, Δq = UnitQuaternion(RotX(theta1init)))
-        setPosition!(pend1,pend2,p1 = p1, p2 = -p2, Δq = UnitQuaternion(RotX(theta2init)))
+        setPosition!(cart,pend1,p2 = -p1, Δq = QuatRotation(RotX(theta1init)))
+        setPosition!(pend1,pend2,p1 = p1, p2 = -p2, Δq = QuatRotation(RotX(theta2init)))
 
         xd = [[[0;0.0;0.0]]; [p1]; [2*p1+p2]]
 
