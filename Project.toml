@@ -21,7 +21,7 @@ ConstrainedDynamicsVis = "0.5.0"
 Interact = "0.10.4"
 Rotations = "1.1.1"
 StaticArrays = "1.4.1"
-julia = "1.7"
+julia = "1.7.2"
 
 [extras]
 SafeTestsets = "1bc83da4-3b8d-516f-aca4-4fe02f6d838f"
